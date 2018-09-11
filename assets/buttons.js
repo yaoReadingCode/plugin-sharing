@@ -1,43 +1,29 @@
-require(['gitbook', 'jquery'], function(gitbook, $) {
+require(['gitbook', 'jquery'], function (gitbook, $) {
     var SITES = {
         'cjj-gitbook-rebuild': {
-            'label': 'Facebook',
-            'icon': 'fa fa-facebook',
-            'onClick': function(e) {
+            'label': '更新gitbook',
+            'icon': 'fa fa-wrench',
+            'onClick': function (e) {
                 e.preventDefault();
-                window.open('http://www.facebook.com/sharer/sharer.php?s=100&p[url]='+encodeURIComponent(location.href));
+                // "/yanfayibu/server-loancore/system-design-docs/sprint_design_%E8%BF%AD%E4%BB%A3%E6%94%B9%E5%8A%A8%E8%AE%BE%E8%AE%A1/api_recall_API%E7%94%A8%E6%88%B7%E5%8F%AC%E5%9B%9E/api_recall_API%E7%94%A8%E6%88%B7%E5%8F%AC%E5%9B%9E.html"
+                var pathname = window.location.pathname;
+                var splits = pathname.split('/');
+                if (splits.length >= 4) {
+                    // 现在是三层结构
+                    var join = splits.splice(1, 3).join('/');
+                    console.log(join);
+                    window.open('http://172.0.12.143:5823/' + join);
+                }
             }
         }
     };
 
 
+    gitbook.events.bind('start', function (e, config) {
 
-    gitbook.events.bind('start', function(e, config) {
-        var opts = config.sharing;
-
-        // Create dropdown menu
-        var menu = $.map(opts.all, function(id) {
-            var site = SITES[id];
-
-            return {
-                text: site.label,
-                onClick: site.onClick
-            };
-        });
-
-        // Create main button with dropdown
-        if (menu.length > 0) {
-            gitbook.toolbar.createButton({
-                icon: 'fa fa-share-alt',
-                label: 'Share',
-                position: 'right',
-                dropdown: [menu]
-            });
-        }
 
         // Direct actions to share
-        $.each(SITES, function(sideId, site) {
-            if (!opts[sideId]) return;
+        $.each(SITES, function (sideId, site) {
 
             gitbook.toolbar.createButton({
                 icon: site.icon,

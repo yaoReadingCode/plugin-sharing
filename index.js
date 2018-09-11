@@ -6,5 +6,5 @@ module.exports = {
         js: [
             'buttons.js'
         ]
-    },
+    }
 };
